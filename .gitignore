@@ -1,0 +1,12 @@
+# Output data
+resources/data/
+resources/plots/
+resources/params/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Files
+*.png
+*.txt
+*.json
