@@ -1,14 +1,7 @@
 import tensorflow as tf
+from hyperparameters import Hyperparameters
 
-
-kernel_init  = tf.contrib.layers.xavier_initializer()
-bias_init    = tf.constant_initializer(0.01)
-uniform_init = tf.keras.initializers.RandomUniform(minval=-3e-3,maxval=3e-3)
-regularizer  = tf.contrib.layers.l2_regularizer(scale=0.0)
-optimizer    = tf.train.AdamOptimizer
-layer1 = 400
-layer2 = 300
-layerout = 1
+H = Hyperparameters()
 
 class CriticNetwork(object):
    """
@@ -35,7 +28,7 @@ class CriticNetwork(object):
 
       # Train actor network with critic network gradients.
       self.cost = tf.reduce_mean(tf.square(self.q_predicted - self.output))
-      self.backprop = optimizer(self.lr).minimize(self.cost)
+      self.backprop = H.optimizer(self.lr).minimize(self.cost)
 
       # Gradients for feed actor network: action gradients.
       self.gradients = tf.gradients(self.output, self.action)
@@ -73,8 +66,8 @@ class CriticNetwork(object):
          action = tf.placeholder(dtype=tf.float32, shape=[None, self.action_size], name='critic_action')
          inputs = tf.concat([state, action],1)
 
-         fc1 = tf.layers.dense(inputs=inputs, units=layer1, activation=tf.nn.relu, kernel_initializer=kernel_init, bias_initializer=bias_init, name='critic_layer1')
-         fc2 = tf.layers.dense(inputs=fc1, units=layer2, activation=tf.nn.relu, kernel_initializer=kernel_init, bias_initializer=bias_init, name='critic_layer2')
-         output = tf.layers.dense(inputs=fc2, units=layerout, activation=None, kernel_initializer=uniform_init, bias_initializer=bias_init, name='critic_output')
+         fc1 = tf.layers.dense(inputs=inputs, units=H.layer1, activation=tf.nn.relu, kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='critic_layer1')
+         fc2 = tf.layers.dense(inputs=fc1, units=H.layer2, activation=tf.nn.relu, kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='critic_layer2')
+         output = tf.layers.dense(inputs=fc2, units=H.layerout, activation=None, kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='critic_output')
          
          return state, action, tf.trainable_variables()[self.n_params:], output

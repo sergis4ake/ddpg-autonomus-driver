@@ -6,9 +6,15 @@ from critic import CriticNetwork
 from experience_buffer import ExperienceBuffer
 from utils import transfer_network_params, calculate_epsilon_decay, noise
 from time import time
+import os
+from config import Configuration
+
+# Configuration
+config = Configuration()
+args = config.args
 
 
-def run(args):
+def run():
    """Build networks, create environment and train agent."""
 
    # Generate a Torcs environment
@@ -39,11 +45,11 @@ def run(args):
       
 
       # Train DDPG on Torcs
-      train(sess, env, args, actor, actor_target, critic, critic_target)
+      train(sess, env, actor, actor_target, critic, critic_target)
 
 
 
-def train(sess, env, args, actor, actor_target, critic, critic_target):
+def train(sess, env, actor, actor_target, critic, critic_target):
 
    # Arguments
    init_episode = args['init_episode']

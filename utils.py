@@ -9,19 +9,25 @@ def to_json(args):
    with open(os.path.join(args['resources'], "params") + "/" + args['file'] + '_train.json', 'w') as f:
       json.dump(args, f)
 
-def mkdir_resources(args):
+def read_json(path):
+   """Load JSON configuration file."""
+   with open(path) as f:
+      data = json.load(f)
+   return data
+
+def mkdir_resources(path):
    """Create resources directory to save and load"""
    try:
-      if not os.path.exists(args['resources']):
-         os.mkdir(args['resources'])
-      if not os.path.exists(args['resources'] + '/network'):
-         os.mkdir(args['resources'] + '/network')
-      if not os.path.exists(args['resources'] + '/params'):
-         os.mkdir(args['resources'] + '/params')
-      if not os.path.exists(args['resources'] + '/data'):
-         os.mkdir(args['resources'] + '/data')
-      if not os.path.exists(args['resources'] + '/plots'):
-         os.mkdir(args['resources'] + '/plots')
+      if not os.path.exists(path):
+         os.mkdir(path)
+      if not os.path.exists(path + '/network'):
+         os.mkdir(path + '/network')
+      if not os.path.exists(path + '/params'):
+         os.mkdir(path + '/params')
+      if not os.path.exists(path + '/data'):
+         os.mkdir(path + '/data')
+      if not os.path.exists(path + '/plots'):
+         os.mkdir(path + '/plots')
    except OSError as exc:
       if exc.errno != errno.EEXIST:
          raise

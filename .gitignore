@@ -10,3 +10,7 @@ resources/params/
 *.png
 *.txt
 *.json
+
+# Pythonic
+*.pyc
+*.pyo

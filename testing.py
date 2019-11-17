@@ -7,9 +7,14 @@ from experience_buffer import ExperienceBuffer
 from utils import transfer_network_params, calculate_epsilon_decay, noise
 from time import time
 import os
+from config import Configuration
+
+# Configuration
+config = Configuration()
+args = config.args
 
 
-def run(args):
+def run():
    """Build networks, create environment and train agent."""
 
    # Generate a Torcs environment
@@ -43,11 +48,11 @@ def run(args):
       saver.restore(sess, os.path.join(os.path.join(args['resources'], "network"), args['file']+'_model'))
 
       # Train DDPG on Torcs
-      test(sess, env, args, actor, actor_target, critic, critic_target)
+      test(sess, env, actor, actor_target, critic, critic_target)
 
 
 
-def test(sess, env, args, actor, actor_target, critic, critic_target):
+def test(sess, env, actor, actor_target, critic, critic_target):
 
    max_episodes  = args['max_episodes']
    max_steps     = args['max_steps']

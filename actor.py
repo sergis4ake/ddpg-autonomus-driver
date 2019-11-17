@@ -1,14 +1,7 @@
 import tensorflow as tf
+from hyperparameters import Hyperparameters
 
-
-kernel_init  = tf.contrib.layers.xavier_initializer()
-bias_init    = tf.constant_initializer(0.01)
-uniform_init = tf.keras.initializers.RandomUniform(minval=-3e-3,maxval=3e-3)
-regularizer  = tf.contrib.layers.l2_regularizer(scale=0.0)
-optimizer    = tf.train.AdamOptimizer
-layer1 = 400
-layer2 = 300
-layerout = 1
+H = Hyperparameters()
 
 class ActorNetwork(object):
    """
@@ -40,7 +33,7 @@ class ActorNetwork(object):
       # self.loss_function()
 
       # Train actor network with critic network gradients.
-      self.backprop = optimizer(self.lr).apply_gradients(zip(self.norm_gradients, self.weights))
+      self.backprop = H.optimizer(self.lr).apply_gradients(zip(self.norm_gradients, self.weights))
 
    def get_params(self):
       """Get params from neural network."""
@@ -78,12 +71,12 @@ class ActorNetwork(object):
       """Build neural network with differents scopes: actor or target actor."""
       with tf.variable_scope(self.scope, reuse=tf.AUTO_REUSE):
          state = tf.placeholder(name='actor_state', dtype=tf.float32, shape=[None, self.state_size])
-         fc1 = tf.layers.dense(inputs=state, units=layer1, activation=tf.nn.relu, kernel_initializer=kernel_init, bias_initializer=bias_init, name='actor_layer1')
-         fc2 = tf.layers.dense(inputs=fc1, units=layer2, activation=tf.nn.relu, kernel_initializer=kernel_init, bias_initializer=bias_init, name='actor_layer2')
+         fc1 = tf.layers.dense(inputs=state, units=H.layer1, activation=tf.nn.relu, kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='actor_layer1')
+         fc2 = tf.layers.dense(inputs=fc1, units=H.layer2, activation=tf.nn.relu, kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='actor_layer2')
 
-         steer = tf.layers.dense(inputs=fc2, units=layerout, activation=tf.nn.tanh, kernel_initializer=uniform_init, bias_initializer=bias_init, name='steer')
-         accel = tf.layers.dense(inputs=fc2, units=layerout, activation=tf.nn.sigmoid, kernel_initializer=uniform_init, bias_initializer=bias_init, name='acc')
-         brake = tf.layers.dense(inputs=fc2, units=layerout, activation=tf.nn.sigmoid, kernel_initializer=uniform_init, bias_initializer=bias_init, name='brake')
+         steer = tf.layers.dense(inputs=fc2, units=H.layerout, activation=tf.nn.tanh, kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='steer')
+         accel = tf.layers.dense(inputs=fc2, units=H.layerout, activation=tf.nn.sigmoid, kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='acc')
+         brake = tf.layers.dense(inputs=fc2, units=H.layerout, activation=tf.nn.sigmoid, kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='brake')
          output = tf.concat([steer, accel, brake], axis=1)
 
          return state, tf.trainable_variables()[self.n_params:], output
