@@ -1,7 +1,7 @@
 import gym
 from gym import spaces
 import numpy as np
-# from os import path
+from os import path
 import snakeoil3_gym as snakeoil3
 import numpy as np
 import copy
@@ -12,9 +12,12 @@ import sys
 
 
 class TorcsEnv:
-    terminal_judge_start = 1000  # If after 100 timestep still no progress, terminated
-    termination_limit_progress = 5  # [km/h], episode terminates if car is running slower than this limit
-    default_speed = 50 
+    # If after 1000 timestep still no progress, terminated
+    terminal_judge_start = 1000
+    # [km/h], episode terminates if car is running slower than this limit
+    termination_limit_progress = 5
+    # [km/h] default speed
+    default_speed = 50
 
     initial_reset = True
 
@@ -137,13 +140,13 @@ class TorcsEnv:
         damage = np.array(obs['damage'])
         rpm = np.array(obs['rpm'])
 
+        # Function of reward
         progress = sp*np.cos(obs['angle']) - np.abs(sp*np.sin(obs['angle']))- sp * np.abs(obs['trackPos'])
         reward = progress
 
-        
         # collision detection
         if obs['damage'] - obs_pre['damage'] > 0:
-            reward = -1 # -1
+            reward = -1 # -10
 
         # Termination judgement #########################
         episode_terminate = False
@@ -255,7 +258,7 @@ class TorcsEnv:
                      'track', 
                      'trackPos',
                      'wheelSpinVel']
-            Observation = col.namedtuple('Observaion', names)
+            Observation = col.namedtuple('Observation', names)
             return Observation(focus=np.array(raw_obs['focus'], dtype=np.float32)/200.,
                                speedX=np.array(raw_obs['speedX'], dtype=np.float32)/300.0,
                                speedY=np.array(raw_obs['speedY'], dtype=np.float32)/300.0,
@@ -276,7 +279,7 @@ class TorcsEnv:
                      'trackPos',
                      'wheelSpinVel',
                      'img']
-            Observation = col.namedtuple('Observaion', names)
+            Observation = col.namedtuple('Observation', names)
 
             # Get RGB from observation
             #image_rgb = self.obs_vision_to_image_rgb(raw_obs['img'])
