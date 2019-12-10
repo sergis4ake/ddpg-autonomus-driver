@@ -24,6 +24,7 @@ class Configuration(metaclass=Singleton):
       self.init_episode = 0
       self.file = '1'
       self.resources = './resources'
+      self.tensorboard = True
       # Load config
       if CONFIG_PATH:
          self.args = self.load_from_file(CONFIG_PATH)
@@ -49,6 +50,7 @@ class Configuration(metaclass=Singleton):
       parser.add_argument('--init-episode', metavar='N', help='0 if train new agent; > 1 if restore networks and training', type=int, default=self.init_episode)
       parser.add_argument('--file', metavar='NAME', help='name of file result', type=str, default=self.file)
       parser.add_argument('--resources', metavar='PATH', help='relative or absolute path of resources', type=str, default=self.resources)
+      parser.add_argument('--tensorboard', metavar='TENSORBOARD', help='save graph of tensorboard for visualize with tensorboard', type=bool, default=self.tensorboard)
       return vars(parser.parse_args())
 
    def load_from_file(self, path=None):

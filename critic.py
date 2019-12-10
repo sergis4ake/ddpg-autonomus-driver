@@ -66,8 +66,17 @@ class CriticNetwork(object):
          action = tf.placeholder(dtype=tf.float32, shape=[None, self.action_size], name='critic_action')
          inputs = tf.concat([state, action],1)
 
-         fc1 = tf.layers.dense(inputs=inputs, units=H.layer1, activation=tf.nn.relu, kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='critic_layer1')
-         fc2 = tf.layers.dense(inputs=fc1, units=H.layer2, activation=tf.nn.relu, kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='critic_layer2')
-         output = tf.layers.dense(inputs=fc2, units=H.layerout, activation=None, kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='critic_output')
+         fc1 = tf.layers.dense(
+            inputs=inputs, units=H.layer1, activation=tf.nn.relu, 
+            kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='critic_layer1'
+         )
+         fc2 = tf.layers.dense(
+            inputs=fc1, units=H.layer2, activation=tf.nn.relu, 
+            kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='critic_layer2'
+         )
+         output = tf.layers.dense(
+            inputs=fc2, units=H.layerout, activation=None, 
+            kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='critic_output'
+         )
          
          return state, action, tf.trainable_variables()[self.n_params:], output

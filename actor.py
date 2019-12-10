@@ -71,12 +71,27 @@ class ActorNetwork(object):
       """Build neural network with differents scopes: actor or target actor."""
       with tf.variable_scope(self.scope, reuse=tf.AUTO_REUSE):
          state = tf.placeholder(name='actor_state', dtype=tf.float32, shape=[None, self.state_size])
-         fc1 = tf.layers.dense(inputs=state, units=H.layer1, activation=tf.nn.relu, kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='actor_layer1')
-         fc2 = tf.layers.dense(inputs=fc1, units=H.layer2, activation=tf.nn.relu, kernel_initializer=H.kernel_init, bias_initializer=H.bias_init, name='actor_layer2')
+         fc1 = tf.layers.dense(
+            inputs=state, units=H.layer1, activation=tf.nn.relu, kernel_initializer=H.kernel_init, 
+            bias_initializer=H.bias_init, name='actor_layer1'
+         )
+         fc2 = tf.layers.dense(
+            inputs=fc1, units=H.layer2, activation=tf.nn.relu, kernel_initializer=H.kernel_init, 
+            bias_initializer=H.bias_init, name='actor_layer2'
+         )
 
-         steer = tf.layers.dense(inputs=fc2, units=H.layerout, activation=tf.nn.tanh, kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='steer')
-         accel = tf.layers.dense(inputs=fc2, units=H.layerout, activation=tf.nn.sigmoid, kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='acc')
-         brake = tf.layers.dense(inputs=fc2, units=H.layerout, activation=tf.nn.sigmoid, kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='brake')
+         steer = tf.layers.dense(
+            inputs=fc2, units=H.layerout, activation=tf.nn.tanh, 
+            kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='steer'
+         )
+         accel = tf.layers.dense(
+            inputs=fc2, units=H.layerout, activation=tf.nn.sigmoid, 
+            kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='acc'
+         )
+         brake = tf.layers.dense(
+            inputs=fc2, units=H.layerout, activation=tf.nn.sigmoid, 
+            kernel_initializer=H.uniform_init, bias_initializer=H.bias_init, name='brake'
+         )
          output = tf.concat([steer, accel, brake], axis=1)
 
          return state, tf.trainable_variables()[self.n_params:], output

@@ -28,6 +28,8 @@ def mkdir_resources(path):
          os.mkdir(path + '/data')
       if not os.path.exists(path + '/plots'):
          os.mkdir(path + '/plots')
+      if not os.path.exists(path + '/logdir'):
+         os.mkdir(path + '/logdir')
    except OSError as exc:
       if exc.errno != errno.EEXIST:
          raise

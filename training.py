@@ -66,6 +66,15 @@ def train(sess, env, actor, actor_target, critic, critic_target):
    saver = tf.train.Saver()
    sess.run(tf.global_variables_initializer()) if init_episode==0 else saver.restore(sess, os.path.join(args['resources'], "network") + "/" + args['file']+"_model")
 
+   # Add tensorboard visualization
+   # $ tensorboard --logdir=./resources/logdir
+   # https://localghost:6006
+   if args['tensorboard']:
+      logdir = os.path.join(args['resources'], 'logdir')
+      if not os.path.exists(logdir):
+         os.mkdir(logdir)
+      tf.summary.FileWriter(logdir, sess.graph)
+
    # Init experience buffer
    buffer = ExperienceBuffer(buffer_size, seed)
 

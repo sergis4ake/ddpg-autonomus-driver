@@ -2,6 +2,8 @@
 resources/data/
 resources/plots/
 resources/params/
+resources/logdir/
+resources/network/
 
 # Jupyter
 .ipynb_checkpoints/
