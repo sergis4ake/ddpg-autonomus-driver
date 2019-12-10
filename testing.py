@@ -84,7 +84,7 @@ def test(sess, env, actor, actor_target, critic, critic_target):
 
          # Action noise: decrease noise (epsilon) for each episode to get better results
          action = actor.predict(np.reshape(state_t0, (1, actor.state_size)))
-         action[0,:] += noise(x=action[0,:], epsilon_decay=epsilon)
+         #action[0,:] += noise(x=action[0,:], epsilon_decay=epsilon)
 
          # Run step and get data for enviroment.
          ob, reward, fin, info = env.step(action[0])

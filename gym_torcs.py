@@ -156,7 +156,7 @@ class TorcsEnv:
         episode_terminate = False
 
 #---------------------------------------------------
-        if (abs(trackPos) > 1.2):
+        if (abs(trackPos) > 1.0):
             print("Out of track ")
             reward = -100
             episode_terminate = True
