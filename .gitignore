@@ -5,6 +5,8 @@ resources/params/
 resources/logdir/
 resources/network/
 
+.idea/
+
 # Jupyter
 .ipynb_checkpoints/
 
