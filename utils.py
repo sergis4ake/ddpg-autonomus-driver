@@ -50,5 +50,10 @@ def transfer_network_params(sess, network, target_network, tau):
    """ Copy parameters for each N iterations from network to target network, actor or critic.
    """
    # Assign network params to target params
-   transfer_params = [var_target.assign(var_net, use_locking=False) for var_net,var_target in zip(tf.trainable_variables(network.scope), tf.trainable_variables(target_network.scope))]
+   # transfer_params = [var_target.assign(var_net, use_locking=False) for var_net,var_target in zip(tf.trainable_variables(network.scope), tf.trainable_variables(target_network.scope))]
+
+   transfer_params = [
+      target_network[i].assign(tf.multiply(network[i], tau) + tf.multiply(target_network[i], 1. - tau))
+      for i in range(len(target_network))
+   ]
    sess.run(transfer_params)
